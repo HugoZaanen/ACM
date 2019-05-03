@@ -8,17 +8,41 @@ namespace ACM
 {
     public class Customer
     {
-        public int CostumerId { get; private set; }
-        public string EmailAddress { get; set; }
+        public Customer() : this(0)
+        {
 
+        }
+
+        public Customer(int customerId)
+        {
+            CustomerId = customerId;
+            AddressList = new List<Address>();
+        }
+
+        public List<Address> AddressList { get; set; }
+        public int CustomerId { get; private set; }
+        public string EmailAddress { get; set; }
+        public int Customertype { get; set; }
         public string FirstName { get; set; }
+
         public string FullName
         {
             get
             {
-                return LastName + ", " + FirstName;
+                string fullName = LastName;
+                if(!string.IsNullOrWhiteSpace(FirstName))
+                {
+                    if(!string.IsNullOrWhiteSpace(fullName))
+                    {
+                        fullName += ", ";
+                    }
+                    fullName += FirstName;
+                }
+                return fullName;
             }
         }
+
+        public static int InstanceCount { get; set; }
 
         private string _lastName;
         public string LastName
@@ -31,6 +55,20 @@ namespace ACM
             {
                 _lastName = value;
             }
+        }
+
+        /// <summary>
+        /// Validates the customer data.
+        /// </summary>
+        /// <returns></returns>
+        public bool Validate()
+        {
+            var isValid = true;
+
+            if (string.IsNullOrWhiteSpace(LastName)) isValid = false;
+            if (string.IsNullOrWhiteSpace(EmailAddress)) isValid = false;
+
+            return isValid;
         }
     }
 }
